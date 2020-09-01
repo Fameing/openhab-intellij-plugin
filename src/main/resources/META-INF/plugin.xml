@@ -1,0 +1,47 @@
+<idea-plugin>
+    <id>org.example.openhab-plugin</id>
+    <name>Openhab</name>
+    <vendor email="igor.yova@gmail.com" url="http://www.miltrex.com">Miltrex</vendor>
+
+    <description><![CDATA[
+        Openhab2 Home Automation System Filesupport and Syntax Highlighting<br /><br />
+        <a href="https://www.openhab.org/">OpenHab Homepage</a>
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!--File Type-->
+        <fileType name="Openhab2 Things File" implementationClass="ua.com.miltrex.openhab.language.things.ThingsFileType"
+                  fieldName="INSTANCE" language="Things" extensions="things" />
+        <fileType name="Openhab2 Items File" implementationClass="ua.com.miltrex.openhab.language.items.ItemsFileType"
+                  fieldName="INSTANCE" language="Items" extensions="items"/>
+        <fileType name="Openhab2 Persist File" implementationClass="ua.com.miltrex.openhab.language.persist.PersistFileType"
+                  fieldName="INSTANCE" language="Persist" extensions="persist"/>
+        <fileType name="Openhab2 Rules File" implementationClass="ua.com.miltrex.openhab.language.rules.RulesFileType"
+                  fieldName="INSTANCE" language="Rules" extensions="rules"/>
+        <fileType name="Openhab2 Scripts File" implementationClass="ua.com.miltrex.openhab.language.scripts.ScriptsFileType"
+                  fieldName="INSTANCE" language="Scripts" extensions="scripts"/>
+        <fileType name="Openhab2 Services File" implementationClass="ua.com.miltrex.openhab.language.services.ServicesFileType"
+                  fieldName="INSTANCE" language="Services" extensions="services"/>
+        <fileType name="Openhab2 Sitemaps File" implementationClass="ua.com.miltrex.openhab.language.sitemaps.SitemapsFileType"
+                  fieldName="INSTANCE" language="Sitemaps" extensions="sitemap"/>
+
+
+        <lang.parserDefinition language="Things"
+                               implementationClass="ua.com.miltrex.openhab.language.things.ThingsParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Things"
+                                       implementationClass="ua.com.miltrex.openhab.language.things.highlighter.ThingsSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="ua.com.miltrex.openhab.language.things.highlighter.ThingsColorSettingsPage"/>
+        <completion.contributor language="Things"
+                                implementationClass="ua.com.miltrex.openhab.language.things.ThingsCompletionContributor"/>
+        <lang.formatter language="Things"
+                        implementationClass="ua.com.miltrex.openhab.language.things.formater.ThingsFormattingModelBuilder"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>

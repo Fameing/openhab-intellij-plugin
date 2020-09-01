@@ -1,0 +1,55 @@
+{
+    parserClass="ua.com.miltrex.openhab.language.things.parser.ThingsParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="Things"
+    psiImplClassSuffix="Impl"
+    psiPackage="ua.com.miltrex.openhab.language.things.psi"
+    psiImplPackage="ua.com.miltrex.openhab.language.things.psi.impl"
+
+    elementTypeHolderClass="ua.com.miltrex.openhab.language.things.psi.ThingsTypes"
+    elementTypeClass="ua.com.miltrex.openhab.language.things.psi.ThingsElementType"
+    tokenTypeClass="ua.com.miltrex.openhab.language.things.psi.ThingsTokenType"
+
+    psiImplUtilClass="ua.com.miltrex.openhab.language.things.psi.impl.ThingsPsiImplUtil"
+
+/* tokens = [
+      SPACE='regexp:\s+' // this need to be commented out when generating the flex file
+      STRING="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\")"
+      NUMBER="regexp:\d+"
+      COMMENT='regexp://[^\r\n]*'
+      BLOCK_COMMENT='regexp:[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]'
+
+      BINDING_ID_KEYWORD_TYPE = 'hue'
+      TYPE_ID_KEYWORD_TYPE = 'bridge'
+      THING_ID_KEYWORD_TYPE = 'mybridge'
+
+      THING_TYPE_KEYWORD ='Thing'
+      BRIDGE_TYPE_KEYWORD='Bridge'
+
+      LPAREN='('
+      RPAREN=')'
+      LBRACE='{'
+      RBRACE='}'
+      LBRACKET='['
+      RBRACKET=']'
+      SEMICOLON=';'
+      COMMA=','
+      EQUALS= '='
+      DQUOTS= '"'
+      ET='@'
+      COLON=':'
+
+  ]*/
+}
+
+thingsFile                  ::= things_*
+private things_             ::= (thing_item|COMMENT|CRLF)
+private binding_id_keyword  ::= BINDING_ID_KEYWORD_TYPE
+private type_id_keyword     ::= TYPE_ID_KEYWORD_TYPE
+private thing_id_keyword    ::= THING_ID_KEYWORD_TYPE
+private binding_type        ::= (binding_id_keyword COLON type_id_keyword COLON thing_id_keyword)
+private parameter           ::= (PARAMETER_KEY SEPARATOR PARAMETER_VALUE)
+private parameter_list      ::= parameter (COMMA parameter_list)*
+thing_item                  ::= THING_KEYWORD_TYPE binding_type (LABEL)? '@'? (LOCATION)? LBRACKET parameter_list RBRACKET

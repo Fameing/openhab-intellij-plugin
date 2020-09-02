@@ -16,7 +16,7 @@ public class ServicesFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "Openhab2 Services File";
+        return "Openhab Services File";
     }
 
     @NotNull

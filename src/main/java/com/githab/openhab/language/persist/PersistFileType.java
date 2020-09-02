@@ -16,7 +16,7 @@ public class PersistFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "Openhab2 Persist File";
+        return "Openhab Persist File";
     }
 
     @NotNull

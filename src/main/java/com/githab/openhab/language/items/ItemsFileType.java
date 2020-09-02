@@ -16,7 +16,7 @@ public class ItemsFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "Openhab2 Items File";
+        return "Openhab Items File";
     }
 
     @NotNull

@@ -16,7 +16,7 @@ public class ScriptsFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "Openhab2 Scripts File";
+        return "Openhab Scripts File";
     }
 
     @NotNull

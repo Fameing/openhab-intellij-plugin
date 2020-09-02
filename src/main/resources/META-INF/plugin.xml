@@ -14,21 +14,25 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!--File Type-->
-        <fileType name="Openhab2 Things File" implementationClass="com.githab.openhab.language.things.ThingsFileType"
-                  fieldName="INSTANCE" language="Things" extensions="things" />
-        <fileType name="Openhab2 Items File" implementationClass="com.githab.openhab.language.items.ItemsFileType"
+        <fileType name="Openhab Things File" implementationClass="com.githab.openhab.language.things.ThingsFileType"
+                  fieldName="INSTANCE" language="Things" extensions="things"/>
+        <fileType name="Openhab Items File" implementationClass="com.githab.openhab.language.items.ItemsFileType"
                   fieldName="INSTANCE" language="Items" extensions="items"/>
-        <fileType name="Openhab2 Persist File" implementationClass="com.githab.openhab.language.persist.PersistFileType"
+        <fileType name="Openhab Persist File" implementationClass="com.githab.openhab.language.persist.PersistFileType"
                   fieldName="INSTANCE" language="Persist" extensions="persist"/>
-        <fileType name="Openhab2 Rules File" implementationClass="com.githab.openhab.language.rules.RulesFileType"
+        <fileType name="Openhab Rules File" implementationClass="com.githab.openhab.language.rules.RulesFileType"
                   fieldName="INSTANCE" language="Rules" extensions="rules"/>
-        <fileType name="Openhab2 Scripts File" implementationClass="com.githab.openhab.language.scripts.ScriptsFileType"
+        <fileType name="Openhab Scripts File" implementationClass="com.githab.openhab.language.scripts.ScriptsFileType"
                   fieldName="INSTANCE" language="Scripts" extensions="scripts"/>
-        <fileType name="Openhab2 Services File" implementationClass="com.githab.openhab.language.services.ServicesFileType"
+        <fileType name="Openhab Services File"
+                  implementationClass="com.githab.openhab.language.services.ServicesFileType"
                   fieldName="INSTANCE" language="Services" extensions="services"/>
-        <fileType name="Openhab2 Sitemaps File" implementationClass="com.githab.openhab.language.sitemaps.SitemapsFileType"
+        <fileType name="Openhab Sitemaps File"
+                  implementationClass="com.githab.openhab.language.sitemaps.SitemapsFileType"
                   fieldName="INSTANCE" language="Sitemaps" extensions="sitemap"/>
 
+        <fileTemplateGroup
+                implementation="com.githab.openhab.ide.actions.OpenhabTemplatesFactory"/>
 
         <lang.parserDefinition language="Things"
                                implementationClass="com.githab.openhab.language.things.ThingsParserDefinition"/>
@@ -42,6 +46,9 @@
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
+        <group id="openhab.new" text="OpenHab">
+            <action id="openhab.new.file" class="com.githab.openhab.ide.actions.OpenhabCreateFileAction"/>
+            <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFromTemplate"/>
+        </group>
     </actions>
 </idea-plugin>

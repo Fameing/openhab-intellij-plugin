@@ -34,8 +34,9 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
   "]"                          { return RBRACKET; }
   ","                          { yybegin(WAITING_PARAMETER_KEY); return COMMA; }
   {SEPARATOR}                  { yybegin(WAITING_PARAMETER_VALUE); return SEPARATOR; }
-  //{VALUE}                      { yybegin(WAITING_PARAMETER_LABEL); return LABEL; }
-  //{LOCATION}                   { return LOCATION; }
+  {VALUE}                      { return LABEL; }
+  "@"                          { return ET; }
+  {VALUE}                      { return LOCATION; }
 
   {END_OF_LINE_COMMENT}        { return COMMENT; }
   {WHITE_SPACE}                { return WHITE_SPACE; }

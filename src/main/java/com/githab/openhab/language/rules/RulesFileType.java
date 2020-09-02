@@ -16,7 +16,7 @@ public class RulesFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "Openhab2 Rules File";
+        return "Openhab Rules File";
     }
 
     @NotNull

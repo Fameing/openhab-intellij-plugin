@@ -11,8 +11,6 @@ public class ThingsFile extends PsiFileBase {
         super(viewProvider, ThingsLanguage.INSTANCE);
     }
 
-
-
     @NotNull
     @Override
     public FileType getFileType() {

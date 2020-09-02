@@ -16,7 +16,7 @@ public class SitemapsFileType extends LanguageFileType {
     @NotNull
     @Override
     public String getName() {
-        return "Openhab2 Sitemaps File";
+        return "Openhab Sitemaps File";
     }
 
     @NotNull

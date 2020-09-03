@@ -16,7 +16,7 @@ import static com.githab.openhab.language.things.psi.ThingsTypes.*;
 %unicode
 %debug
 
-%state WAITING_BINDING_ID, WAITING_TYPE_ID, WAITING_THING_ID, WAITING_PARAMETER_KEY, WAITING_PARAMETER_VALUE
+%state WAITING_BINDING_ID, WAITING_TYPE_ID, WAITING_THING_ID, WAITING_PARAMETER_KEY, WAITING_PARAMETER_VALUE, WAITING_LOCATION
 CRLF=\R
 WHITE_SPACE=\s+
 SEPARATOR=[=]
@@ -26,6 +26,9 @@ VALUE=[\"][\S]+[\"]|\d+
 LOCATION=(\?<=")[\s\S]+?(\?=")
 END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
 
+DOUBLE_QUOTED_LITERAL=\"([^\\\"\r\n]|{ESCAPE_SEQUENCE}|(\\[\r\n]))*?(\"|\\)?
+ESCAPE_SEQUENCE=\\[^\r\n]
+
 %%
 <YYINITIAL> {
   "Thing"                      { yybegin(WAITING_BINDING_ID); return THING_KEYWORD_TYPE; }
@@ -33,10 +36,10 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
   "["                          { yybegin(WAITING_PARAMETER_KEY); return LBRACKET; }
   "]"                          { return RBRACKET; }
   ","                          { yybegin(WAITING_PARAMETER_KEY); return COMMA; }
+  "@"                          { yybegin(WAITING_LOCATION); return ET; }
+
   {SEPARATOR}                  { yybegin(WAITING_PARAMETER_VALUE); return SEPARATOR; }
-  {VALUE}                      { return LABEL; }
-  "@"                          { return ET; }
-  {VALUE}                      { return LOCATION; }
+  {DOUBLE_QUOTED_LITERAL}      { return LABEL; }
 
   {END_OF_LINE_COMMENT}        { return COMMENT; }
   {WHITE_SPACE}                { return WHITE_SPACE; }
@@ -64,6 +67,11 @@ END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
  <WAITING_PARAMETER_VALUE> {
    {WHITE_SPACE}              { yybegin(WAITING_PARAMETER_VALUE); return WHITE_SPACE; }
    {VALUE}                    { yybegin(YYINITIAL); return PARAMETER_VALUE; }
+ }
+
+ <WAITING_LOCATION> {
+    {WHITE_SPACE}             { yybegin(WAITING_LOCATION); return WHITE_SPACE; }
+    {DOUBLE_QUOTED_LITERAL}   { yybegin(YYINITIAL); return LOCATION; }
  }
 
  ({CRLF}|{WHITE_SPACE})+      { return WHITE_SPACE; }

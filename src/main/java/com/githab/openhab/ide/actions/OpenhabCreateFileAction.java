@@ -1,10 +1,9 @@
 package com.githab.openhab.ide.actions;
 
 import com.githab.openhab.ide.icons.OpenhabIcons;
-import com.githab.openhab.language.OpenhabBundle;
+import com.githab.openhab.OpenhabBundle;
 import com.githab.openhab.language.items.ItemsFileType;
 import com.githab.openhab.language.items.ItemsIcons;
-import com.githab.openhab.language.items.ItemsLanguage;
 import com.githab.openhab.language.persist.PersistFileType;
 import com.githab.openhab.language.persist.PersistIcons;
 import com.githab.openhab.language.rules.RulesFileType;
@@ -15,11 +14,8 @@ import com.githab.openhab.language.services.ServicesFileType;
 import com.githab.openhab.language.services.ServicesIcons;
 import com.githab.openhab.language.sitemaps.SitemapsFileType;
 import com.githab.openhab.language.sitemaps.SitemapsIcons;
-import com.githab.openhab.language.things.ThingsFile;
 import com.githab.openhab.language.things.ThingsFileType;
 import com.githab.openhab.language.things.ThingsIcons;
-import com.githab.openhab.language.things.ThingsLanguage;
-import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.ide.actions.CreateFileFromTemplateAction;
 import com.intellij.ide.actions.CreateFileFromTemplateDialog;
 import com.intellij.openapi.project.DumbAware;

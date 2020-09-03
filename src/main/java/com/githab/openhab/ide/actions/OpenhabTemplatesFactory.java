@@ -1,11 +1,8 @@
 package com.githab.openhab.ide.actions;
 
-import com.githab.openhab.language.OpenhabBundle;
-import com.githab.openhab.language.things.ThingsFile;
-import com.githab.openhab.language.things.ThingsFileType;
+import com.githab.openhab.OpenhabBundle;
 import com.githab.openhab.language.things.ThingsIcons;
 import com.intellij.codeInsight.actions.ReformatCodeProcessor;
-import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateDescriptor;
 import com.intellij.ide.fileTemplates.FileTemplateGroupDescriptor;

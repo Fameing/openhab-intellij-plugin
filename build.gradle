@@ -1,40 +1,57 @@
 plugins {
-    id 'java'
-    id 'org.jetbrains.intellij' version '0.4.21'
+    id "java"
+    id "org.jetbrains.intellij" version "0.4.21"
+    id "org.jetbrains.changelog" version "0.4.0"
     id "org.jetbrains.grammarkit" version "2020.2.1"
 }
 
-apply plugin: 'org.jetbrains.grammarkit'
-sourceCompatibility = 1.8
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
-import org.jetbrains.grammarkit.tasks.GenerateLexer
-import org.jetbrains.grammarkit.tasks.GenerateParser
-
-group 'com.githab'
-version '1.0.0-SNAPSHOT'
-
-sourceSets.main.java.srcDirs 'src/main/gen'
+group = pluginGroup
+version = pluginVersion
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.13'
 }
 
+sourceSets.main.java.srcDirs 'src/main/gen'
+
+apply plugin: 'idea'
 intellij {
-    version = '2020.2'
+    pluginName = pluginName
+    version = platformVersion
+    type = platformType
+    downloadSources = platformDownloadSources.toBoolean()
+    updateSinceUntilBuild = true
 }
 
-patchPluginXml {
-    version = project.version
-    sinceBuild = '202'
-    untilBuild = '202.*'
-    changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+publishPlugin {
+    dependsOn patchChangelog
+    token(System.getenv("PUBLISH_TOKEN"))
 }
+
+apply plugin: 'org.jetbrains.changelog'
+patchPluginXml {
+    version = pluginVersion
+    sinceBuild = pluginSinceBuild
+    untilBuild = pluginUntilBuild
+    patchPluginXml {
+        changeNotes({ changelog.getUnreleased().toHTML() })
+    }
+}
+
+// Lexer generation ===========================================================
+apply plugin: 'org.jetbrains.grammarkit'
+import org.jetbrains.grammarkit.tasks.GenerateLexer
+import org.jetbrains.grammarkit.tasks.GenerateParser
 
 task generateThingsParser(type: GenerateParser) {
     source = "src/main/java/com/githab/openhab/language/things/Things.bnf"
@@ -55,3 +72,5 @@ compileJava {
     dependsOn generateThingsParser
     dependsOn generateThingsLexer
 }
+
+compileJava.options.encoding = 'UTF-8'

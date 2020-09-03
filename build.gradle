@@ -1,30 +1,76 @@
 plugins {
-    id 'java'
-    id 'org.jetbrains.intellij' version '0.4.21'
+    id "java"
+    id "org.jetbrains.intellij" version "0.4.21"
+    id "org.jetbrains.changelog" version "0.4.0"
+    id "org.jetbrains.grammarkit" version "2020.2.1"
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
-sourceSets.main.java.srcDirs 'src/main/gen'
-//compileJava.dependsOn tasks.generateApi
+group = pluginGroup
+version = pluginVersion
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.13'
 }
 
-// See https://github.com/JetBrains/gradle-intellij-plugin/
+sourceSets.main.java.srcDirs 'src/main/gen'
+
+apply plugin: 'idea'
 intellij {
-    version '2020.2.1'
-    type 'IC'
-    pluginName 'OpenHab Plugin'
+    pluginName = pluginName
+    version = platformVersion
+    type = platformType
+    downloadSources = platformDownloadSources.toBoolean()
+    updateSinceUntilBuild = true
 }
+
+publishPlugin {
+    dependsOn patchChangelog
+    token(System.getenv("PUBLISH_TOKEN"))
+}
+
+apply plugin: 'org.jetbrains.changelog'
 patchPluginXml {
-    changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
+    version = pluginVersion
+    sinceBuild = pluginSinceBuild
+    untilBuild = pluginUntilBuild
+    patchPluginXml {
+        changeNotes({ changelog.getUnreleased().toHTML() })
+    }
 }
+
+// Lexer generation ===========================================================
+apply plugin: 'org.jetbrains.grammarkit'
+import org.jetbrains.grammarkit.tasks.GenerateLexer
+import org.jetbrains.grammarkit.tasks.GenerateParser
+
+task generateThingsParser(type: GenerateParser) {
+    source = "src/main/java/com/githab/openhab/language/things/Things.bnf"
+    targetRoot = 'src/main/gen'
+    pathToParser = '/com/githab/openhab/language/things/parser/ThingsParser.java'
+    pathToPsiRoot = '/com/githab/openhab/language/things/psi'
+    purgeOldFiles = true
+}
+
+task generateThingsLexer(type: GenerateLexer) {
+    source "src/main/java/com/githab/openhab/language/things/Things.flex"
+    targetDir "src/main/gen/com/githab/openhab/language/things"
+    targetClass "ThingsLexer"
+    purgeOldFiles true
+}
+
+compileJava {
+    dependsOn generateThingsParser
+    dependsOn generateThingsLexer
+}
+
+compileJava.options.encoding = 'UTF-8'

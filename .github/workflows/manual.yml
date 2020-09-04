@@ -8,16 +8,10 @@ jobs:
     steps:
       - name: Сheckout master
         uses: actions/checkout@master
-
-      - name: Merge develop -> staging
+      - name: Merge develop -> master
         uses: everlytic/branch-merge@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           source_ref: 'develop'
           target_branch: 'master'
           commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}

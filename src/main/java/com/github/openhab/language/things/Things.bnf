@@ -1,0 +1,26 @@
+{
+    parserClass="com.github.openhab.language.things.parser.ThingsParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="Things"
+    psiImplClassSuffix="Impl"
+    psiPackage="com.github.openhab.language.things.psi"
+    psiImplPackage="com.github.openhab.language.things.psi.impl"
+
+    elementTypeHolderClass="com.github.openhab.language.things.psi.ThingsTypes"
+    elementTypeClass="com.github.openhab.language.things.psi.ThingsElementType"
+    tokenTypeClass="com.github.openhab.language.things.psi.ThingsTokenType"
+
+    psiImplUtilClass="com.github.openhab.language.things.psi.impl.ThingsPsiImplUtil"
+}
+
+thingsFile                  ::= things_*
+private things_             ::= (thing_item|COMMENT|CRLF)
+private binding_id_keyword  ::= BINDING_ID_KEYWORD_TYPE
+private type_id_keyword     ::= TYPE_ID_KEYWORD_TYPE
+private thing_id_keyword    ::= THING_ID_KEYWORD_TYPE
+private binding_type        ::= (binding_id_keyword COLON type_id_keyword COLON thing_id_keyword)
+private parameter           ::= (PARAMETER_KEY SEPARATOR (STRING_PARAMETER_VALUE|NUMBER_PARAMETER_VALUE))
+private parameter_list      ::= parameter (COMMA parameter_list)*
+thing_item                  ::= THING_KEYWORD_TYPE binding_type LABEL? ET? LOCATION? LBRACKET parameter_list RBRACKET

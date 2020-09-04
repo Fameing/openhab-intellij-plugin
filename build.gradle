@@ -58,16 +58,16 @@ import org.jetbrains.grammarkit.tasks.GenerateLexer
 import org.jetbrains.grammarkit.tasks.GenerateParser
 
 task generateThingsParser(type: GenerateParser) {
-    source = "src/main/java/com/githab/openhab/language/things/Things.bnf"
+    source = "src/main/java/com/github/openhab/language/things/Things.bnf"
     targetRoot = 'src/main/gen'
-    pathToParser = '/com/githab/openhab/language/things/parser/ThingsParser.java'
-    pathToPsiRoot = '/com/githab/openhab/language/things/psi'
+    pathToParser = '/com/github/openhab/language/things/parser/ThingsParser.java'
+    pathToPsiRoot = '/com/github/openhab/language/things/psi'
     purgeOldFiles = true
 }
 
 task generateThingsLexer(type: GenerateLexer) {
-    source "src/main/java/com/githab/openhab/language/things/Things.flex"
-    targetDir "src/main/gen/com/githab/openhab/language/things"
+    source "src/main/java/com/github/openhab/language/things/Things.flex"
+    targetDir "src/main/gen/com/github/openhab/language/things"
     targetClass "ThingsLexer"
     purgeOldFiles true
 }

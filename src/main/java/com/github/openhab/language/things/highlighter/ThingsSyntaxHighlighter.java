@@ -90,6 +90,8 @@ public class ThingsSyntaxHighlighter extends SyntaxHighlighterBase {
             return NUMBER_PARAMETER_VALUE_KEYS;
         } else if (tokenType.equals(ThingsTypes.LBRACKET) || tokenType.equals(ThingsTypes.RBRACKET)) {
             return BRACKET_KEYS;
+        } else if (tokenType.equals(ThingsTypes.COMMENT)) {
+            return COMMENT_KEYS;
         } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
             return BAD_CHAR_KEYS;
         } else {

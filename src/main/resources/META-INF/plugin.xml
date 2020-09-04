@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>com.githab.openhab</id>
+    <id>com.github.openhab</id>
     <name>Openhab</name>
     <vendor email="igor.yova@gmail.com" url="http://www.miltrex.com">Miltrex</vendor>
 
@@ -14,40 +14,42 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!--File Type-->
-        <fileType name="Openhab Things File" implementationClass="com.githab.openhab.language.things.ThingsFileType"
+        <fileType name="Openhab Things File" implementationClass="com.github.openhab.language.things.ThingsFileType"
                   fieldName="INSTANCE" language="Things" extensions="things"/>
-        <fileType name="Openhab Items File" implementationClass="com.githab.openhab.language.items.ItemsFileType"
+        <fileType name="Openhab Items File" implementationClass="com.github.openhab.language.items.ItemsFileType"
                   fieldName="INSTANCE" language="Items" extensions="items"/>
-        <fileType name="Openhab Persist File" implementationClass="com.githab.openhab.language.persist.PersistFileType"
+        <fileType name="Openhab Persist File" implementationClass="com.github.openhab.language.persist.PersistFileType"
                   fieldName="INSTANCE" language="Persist" extensions="persist"/>
-        <fileType name="Openhab Rules File" implementationClass="com.githab.openhab.language.rules.RulesFileType"
+        <fileType name="Openhab Rules File" implementationClass="com.github.openhab.language.rules.RulesFileType"
                   fieldName="INSTANCE" language="Rules" extensions="rules"/>
-        <fileType name="Openhab Scripts File" implementationClass="com.githab.openhab.language.scripts.ScriptsFileType"
+        <fileType name="Openhab Scripts File" implementationClass="com.github.openhab.language.scripts.ScriptsFileType"
                   fieldName="INSTANCE" language="Scripts" extensions="scripts"/>
         <fileType name="Openhab Services File"
-                  implementationClass="com.githab.openhab.language.services.ServicesFileType"
+                  implementationClass="com.github.openhab.language.services.ServicesFileType"
                   fieldName="INSTANCE" language="Services" extensions="services"/>
         <fileType name="Openhab Sitemaps File"
-                  implementationClass="com.githab.openhab.language.sitemaps.SitemapsFileType"
+                  implementationClass="com.github.openhab.language.sitemaps.SitemapsFileType"
                   fieldName="INSTANCE" language="Sitemaps" extensions="sitemap"/>
 
         <fileTemplateGroup
-                implementation="com.githab.openhab.ide.actions.OpenhabTemplatesFactory"/>
+                implementation="com.github.openhab.ide.actions.OpenhabTemplatesFactory"/>
 
         <lang.parserDefinition language="Things"
-                               implementationClass="com.githab.openhab.language.things.ThingsParserDefinition"/>
+                               implementationClass="com.github.openhab.language.things.ThingsParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Things"
-                                       implementationClass="com.githab.openhab.language.things.highlighter.ThingsSyntaxHighlighterFactory"/>
-        <colorSettingsPage implementation="com.githab.openhab.language.things.highlighter.ThingsColorSettingsPage"/>
+                                       implementationClass="com.github.openhab.language.things.highlighter.ThingsSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="com.github.openhab.language.things.highlighter.ThingsColorSettingsPage"/>
         <completion.contributor language="Things"
-                                implementationClass="com.githab.openhab.language.things.ThingsCompletionContributor"/>
+                                implementationClass="com.github.openhab.language.things.ThingsCompletionContributor"/>
         <lang.formatter language="Things"
-                        implementationClass="com.githab.openhab.language.things.formater.ThingsFormattingModelBuilder"/>
+                        implementationClass="com.github.openhab.language.things.formater.ThingsFormattingModelBuilder"/>
+
+        <lang.commenter language="Things" implementationClass="com.github.openhab.language.things.commenter.ThingsCommenter"/>
     </extensions>
 
     <actions>
         <group id="openhab.new" text="OpenHab">
-            <action id="openhab.new.file" class="com.githab.openhab.ide.actions.OpenhabCreateFileAction"/>
+            <action id="openhab.new.file" class="com.github.openhab.ide.actions.OpenhabCreateFileAction"/>
             <add-to-group group-id="NewGroup" anchor="before" relative-to-action="NewFromTemplate"/>
         </group>
     </actions>

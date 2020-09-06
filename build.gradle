@@ -65,6 +65,14 @@ task generateThingsParser(type: GenerateParser) {
     purgeOldFiles = true
 }
 
+task generateItemsParser(type: GenerateParser) {
+    source = "src/main/java/com/github/openhab/language/items/Items.bnf"
+    targetRoot = 'src/main/gen'
+    pathToParser = '/com/github/openhab/language/items/parser/ItemsParser.java'
+    pathToPsiRoot = '/com/github/openhab/language/items/psi'
+    purgeOldFiles = true
+}
+
 task generateThingsLexer(type: GenerateLexer) {
     source "src/main/java/com/github/openhab/language/things/Things.flex"
     targetDir "src/main/gen/com/github/openhab/language/things"
@@ -72,9 +80,37 @@ task generateThingsLexer(type: GenerateLexer) {
     purgeOldFiles true
 }
 
+task generateItemsLexer(type: GenerateLexer) {
+    source "src/main/java/com/github/openhab/language/items/Items.flex"
+    targetDir "src/main/gen/com/github/openhab/language/items"
+    targetClass "ItemsLexer"
+    purgeOldFiles true
+}
+
+task generateRulesParser(type: GenerateParser) {
+    source = "src/main/java/com/github/openhab/language/rules/Rules.bnf"
+    targetRoot = 'src/main/gen'
+    pathToParser = '/com/github/openhab/language/rules/parser/RulesParser.java'
+    pathToPsiRoot = '/com/github/openhab/language/rules/psi'
+    purgeOldFiles = true
+}
+
+task generateRulesLexer(type: GenerateLexer) {
+    source "src/main/java/com/github/openhab/language/rules/Rules.flex"
+    targetDir "src/main/gen/com/github/openhab/language/rules"
+    targetClass "RulesLexer"
+    purgeOldFiles true
+}
+
 compileJava {
     dependsOn generateThingsParser
     dependsOn generateThingsLexer
+
+    dependsOn generateItemsParser
+    dependsOn generateItemsLexer
+
+    dependsOn generateRulesParser
+    dependsOn generateRulesLexer
 }
 
 compileJava.options.encoding = 'UTF-8'

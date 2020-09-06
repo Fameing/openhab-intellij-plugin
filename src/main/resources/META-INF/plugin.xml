@@ -13,38 +13,56 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!--File Type-->
+        <!--Things Type-->
         <fileType name="Openhab Things File" implementationClass="com.github.openhab.language.things.ThingsFileType"
                   fieldName="INSTANCE" language="Things" extensions="things"/>
         <fileType name="Openhab Items File" implementationClass="com.github.openhab.language.items.ItemsFileType"
                   fieldName="INSTANCE" language="Items" extensions="items"/>
-        <fileType name="Openhab Persist File" implementationClass="com.github.openhab.language.persist.PersistFileType"
-                  fieldName="INSTANCE" language="Persist" extensions="persist"/>
         <fileType name="Openhab Rules File" implementationClass="com.github.openhab.language.rules.RulesFileType"
                   fieldName="INSTANCE" language="Rules" extensions="rules"/>
+        <fileType name="Openhab Sitemaps File" implementationClass="com.github.openhab.language.sitemaps.SitemapsFileType"
+                  fieldName="INSTANCE" language="Sitemaps" extensions="sitemap"/>
+        <fileType name="Openhab Persist File" implementationClass="com.github.openhab.language.persist.PersistFileType"
+                  fieldName="INSTANCE" language="Persist" extensions="persist"/>
         <fileType name="Openhab Scripts File" implementationClass="com.github.openhab.language.scripts.ScriptsFileType"
                   fieldName="INSTANCE" language="Scripts" extensions="scripts"/>
-        <fileType name="Openhab Services File"
-                  implementationClass="com.github.openhab.language.services.ServicesFileType"
+        <fileType name="Openhab Services File" implementationClass="com.github.openhab.language.services.ServicesFileType"
                   fieldName="INSTANCE" language="Services" extensions="services"/>
-        <fileType name="Openhab Sitemaps File"
-                  implementationClass="com.github.openhab.language.sitemaps.SitemapsFileType"
-                  fieldName="INSTANCE" language="Sitemaps" extensions="sitemap"/>
 
-        <fileTemplateGroup
-                implementation="com.github.openhab.ide.actions.OpenhabTemplatesFactory"/>
 
         <lang.parserDefinition language="Things"
                                implementationClass="com.github.openhab.language.things.ThingsParserDefinition"/>
+        <lang.parserDefinition language="Items"
+                               implementationClass="com.github.openhab.language.items.ItemsParserDefinition"/>
+        <lang.parserDefinition language="Rules"
+                               implementationClass="com.github.openhab.language.rules.RulesParserDefinition"/>
+
+
         <lang.syntaxHighlighterFactory language="Things"
                                        implementationClass="com.github.openhab.language.things.highlighter.ThingsSyntaxHighlighterFactory"/>
+        <lang.syntaxHighlighterFactory language="Items"
+                                       implementationClass="com.github.openhab.language.items.highlighter.ItemsSyntaxHighlighterFactory"/>
+        <lang.syntaxHighlighterFactory language="Rules"
+                                       implementationClass="com.github.openhab.language.rules.highlighter.RulesSyntaxHighlighterFactory"/>
+
+
         <colorSettingsPage implementation="com.github.openhab.language.things.highlighter.ThingsColorSettingsPage"/>
+        <colorSettingsPage implementation="com.github.openhab.language.items.highlighter.ItemsColorSettingsPage"/>
+        <colorSettingsPage implementation="com.github.openhab.language.rules.highlighter.RulesColorSettingsPage"/>
+
         <completion.contributor language="Things"
                                 implementationClass="com.github.openhab.language.things.ThingsCompletionContributor"/>
         <lang.formatter language="Things"
                         implementationClass="com.github.openhab.language.things.formater.ThingsFormattingModelBuilder"/>
 
+
+
         <lang.commenter language="Things" implementationClass="com.github.openhab.language.things.commenter.ThingsCommenter"/>
+        <lang.commenter language="Items" implementationClass="com.github.openhab.language.items.commenter.ItemsCommenter"/>
+        <lang.commenter language="Rules" implementationClass="com.github.openhab.language.rules.commenter.RulesCommenter"/>
+
+        <fileTemplateGroup
+                implementation="com.github.openhab.ide.actions.OpenhabTemplatesFactory"/>
     </extensions>
 
     <actions>

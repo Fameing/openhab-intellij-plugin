@@ -13,7 +13,7 @@ import com.github.openhab.language.things.psi.ThingsTypes;
 
 public class ThingsCompletionContributor extends CompletionContributor {
     public ThingsCompletionContributor() {
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement(ThingsTypes.THING_KEYWORD_TYPE),
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(ThingsTypes.THING_KEYWORD),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
@@ -23,7 +23,7 @@ public class ThingsCompletionContributor extends CompletionContributor {
                     }
                 }
         );
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement(ThingsTypes.BINDING_ID_KEYWORD_TYPE),
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(ThingsTypes.BINDING_ID_KEYWORD),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
@@ -32,7 +32,7 @@ public class ThingsCompletionContributor extends CompletionContributor {
                     }
                 }
         );
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement(ThingsTypes.LBRACKET),
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(ThingsTypes.LEFT_BRACKET),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,
@@ -41,7 +41,7 @@ public class ThingsCompletionContributor extends CompletionContributor {
                     }
                 }
         );
-        extend(CompletionType.BASIC, PlatformPatterns.psiElement(ThingsTypes.RBRACKET),
+        extend(CompletionType.BASIC, PlatformPatterns.psiElement(ThingsTypes.RIGHT_BRACKET),
                 new CompletionProvider<CompletionParameters>() {
                     public void addCompletions(@NotNull CompletionParameters parameters,
                                                @NotNull ProcessingContext context,

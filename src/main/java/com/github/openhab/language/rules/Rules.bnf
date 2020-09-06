@@ -1,0 +1,84 @@
+/*
+rule "<RULE_NAME>"
+when
+    Thing <thingUID> changed [from <status>] [to <status>]
+    <TRIGGER_CONDITION> [or <TRIGGER_CONDITION2> [or ...]]
+then
+    <SCRIPT_BLOCK>
+end
+*/
+
+{
+    parserClass="com.github.openhab.language.rules.parser.RulesParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="Things"
+    psiImplClassSuffix="Impl"
+    psiPackage="com.github.openhab.language.rules.psi"
+    psiImplPackage="com.github.openhab.language.rules.psi.impl"
+
+    elementTypeHolderClass="com.github.openhab.language.rules.psi.RulesTypes"
+    elementTypeClass="com.github.openhab.language.rules.psi.RulesElementType"
+    tokenTypeClass="com.github.openhab.language.rules.psi.RulesTokenType"
+
+    psiImplUtilClass="com.github.openhab.language.rules.psi.impl.RulesPsiImplUtil"
+
+    tokens = [
+        STRING_LITERAL='regexp:"([^"]|"")*"'
+        IDENTIFIER_STRING='regexp:[a-zA-Z][a-zA-Z0-9_-]*'
+        NUMBER_LITERAL='regexp:[0-9]+'
+        WHITE_SPACE='regexp:\s+'
+
+        COMMA=','
+        LEFT_PAREN="("
+        RIGHT_PAREN=")"
+        LEFT_BRACE="{"
+        RIGHT_BRACE="}"
+        LEFT_BRACKET="["
+        RIGHT_BRACKET="]"
+        LESS_THAN="<"
+        MORE_THAN=">"
+        EQUALS="="
+    ]
+}
+RulesFile          ::= ItemRules_*
+private ItemRules_::= (RulesItem|COMMENT|CRLF)
+
+RuleName           ::= STRING_LITERAL
+ItemId             ::= STRING_LITERAL
+ThingId            ::= STRING_LITERAL
+GroupId            ::= STRING_LITERAL
+ChannelId          ::= STRING_LITERAL
+Start              ::= STRING_LITERAL
+
+ReceivedCommand    ::= 'received command' ('ON'|'OFF'|'DOWN'|'INCREASE')
+ReceivedUpdate     ::= 'received update' STRING_LITERAL
+Changed            ::= 'changed from' STRING_LITERAL 'to' STRING_LITERAL
+
+ItemCondition      ::= 'Item' ItemId (ReceivedCommand|ReceivedUpdate|Changed)
+ThingCondition     ::= 'Thing' ThingId (ReceivedCommand|ReceivedUpdate|Changed)
+MemberCondition    ::= 'Member of' GroupId (ReceivedCommand|ReceivedUpdate|Changed)
+
+ChannelConditionTriggered     ::= 'Channel' ChannelId 'triggered' Start
+
+SystemConditionStarted        ::= 'System started'
+SystemConditionShutsDown      ::= 'System shuts down'
+SystemCondition               ::= (SystemConditionStarted|SystemConditionShutsDown)
+
+TimeConditionIsNoon           ::= 'Time is noon'
+TimeConditionIsMidnight       ::= 'Time is Midnight'
+TileConditionCron             ::= 'Time cron' STRING_LITERAL
+TimeCondition                 ::= (TimeConditionIsNoon|TimeConditionIsMidnight|TileConditionCron)
+
+TriggerCondition   ::= (ItemCondition|ThingCondition|MemberCondition|ChannelConditionTriggered|TimeCondition|SystemCondition)
+TriggerConditions  ::= TriggerCondition ('or' TriggerConditions)*
+
+ScriptBlock        ::= IDENTIFIER_STRING
+
+RulesItem          ::= 'rule' RuleName
+                       'when'
+                       TriggerConditions
+                       'then'
+                       ScriptBlock
+                       'end'

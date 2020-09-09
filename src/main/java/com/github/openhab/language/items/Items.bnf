@@ -1,0 +1,56 @@
+// Number Livingroom_Temperature "Temperature [%.1f °C]" <temperature> (gTemperature, gLivingroom) ["TargetTemperature"] {knx="1/0/15+0/0/15"}
+
+{
+    parserClass="com.github.openhab.language.items.parser.ItemsParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="Things"
+    psiImplClassSuffix="Impl"
+    psiPackage="com.github.openhab.language.items.psi"
+    psiImplPackage="com.github.openhab.language.items.psi.impl"
+
+    elementTypeHolderClass="com.github.openhab.language.items.psi.ItemsTypes"
+    elementTypeClass="com.github.openhab.language.items.psi.ItemsElementType"
+    tokenTypeClass="com.github.openhab.language.items.psi.ItemsTokenType"
+
+    psiImplUtilClass="com.github.openhab.language.items.psi.impl.ItemsPsiImplUtil"
+
+    tokens = [
+        STRING_LITERAL='regexp:"([^"]|"")*"'
+        IDENTIFIER_STRING='regexp:[a-zA-Z][a-zA-Z0-9_-]*'
+        NUMBER_LITERAL='regexp:[0-9]+'
+        WHITE_SPACE='regexp:\s+'
+
+        COMMA=','
+        LEFT_PAREN="("
+        RIGHT_PAREN=")"
+        LEFT_BRACE="{"
+        RIGHT_BRACE="}"
+        LEFT_BRACKET="["
+        RIGHT_BRACKET="]"
+        LESS_THAN="<"
+        MORE_THAN=">"
+        EQUALS="="
+    ]
+}
+ItemsFile          ::= ItemThings_*
+private ItemThings_::= (ItemsItem|COMMENT|CRLF)
+
+Group              ::= IDENTIFIER_STRING
+ItemGroups         ::= Group (COMMA ItemGroups)*
+
+Tag                ::= STRING_LITERAL
+ItemTags           ::= Tag (COMMA ItemTags)*
+
+ParameterKey       ::= IDENTIFIER_STRING
+ParameterValue     ::= (STRING_LITERAL|NUMBER_LITERAL)
+BindingConfig       ::= ParameterKey EQUALS ParameterValue
+BindingConfigs      ::= BindingConfig (COMMA BindingConfigs)*
+
+ItemType           ::= IDENTIFIER_STRING
+ItemName           ::= IDENTIFIER_STRING
+Label              ::= STRING_LITERAL
+IconName           ::= LESS_THAN IDENTIFIER_STRING MORE_THAN
+
+ItemsItem          ::= ItemType ItemName Label? IconName? (LEFT_PAREN ItemGroups RIGHT_PAREN)? (LEFT_BRACKET ItemTags RIGHT_BRACKET)? (LEFT_BRACE BindingConfigs RIGHT_BRACE)?

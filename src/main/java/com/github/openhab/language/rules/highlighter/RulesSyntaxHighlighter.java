@@ -1,7 +1,7 @@
-package com.github.openhab.language.things.highlighter;
+package com.github.openhab.language.rules.highlighter;
 
-import com.github.openhab.language.things.ThingsLexerAdapter;
-import com.github.openhab.language.things.psi.ThingsTypes;
+import com.github.openhab.language.rules.RulesLexerAdapter;
+import com.github.openhab.language.rules.psi.RulesTypes;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
@@ -13,8 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 
-public class ThingsSyntaxHighlighter extends SyntaxHighlighterBase {
-
+public class RulesSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey SEPARATOR = createTextAttributesKey("THINGS_SEPARATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
     public static final TextAttributesKey BAD_CHARACTER = createTextAttributesKey("THINGS_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
@@ -60,37 +59,19 @@ public class ThingsSyntaxHighlighter extends SyntaxHighlighterBase {
     @NotNull
     @Override
     public Lexer getHighlightingLexer() {
-        return new ThingsLexerAdapter();
+        return new RulesLexerAdapter();
     }
 
     @NotNull
     @Override
     public TextAttributesKey[] getTokenHighlights(IElementType tokenType) {
-        if (tokenType.equals(ThingsTypes.EQUALS)) {
+        if (tokenType.equals(RulesTypes.EQUALS)) {
             return SEPARATOR_KEYS;
-        } else if (tokenType.equals(ThingsTypes.THING_KEYWORD)) {
-            return THINGS_KEYWORD_KEYS;
-        } else if (tokenType.equals(ThingsTypes.BINDING_ID_KEYWORD) ||
-                tokenType.equals(ThingsTypes.TYPE_ID_KEYWORD) ||
-                tokenType.equals(ThingsTypes.THING_ID_KEYWORD)) {
-            return BINDING_ID_KEYS;
-        } else if (tokenType.equals(ThingsTypes.COLON)) {
-            return BINDING_SEPARATOR_KEYS;
-        } else if (tokenType.equals(ThingsTypes.COMMA)) {
+        } else if (tokenType.equals(RulesTypes.COMMA)) {
             return COMMA_KEYS;
-        } else if (tokenType.equals(ThingsTypes.LABEL)) {
-            return LABEL_KEYS;
-        } else if (tokenType.equals(ThingsTypes.LOCATION)) {
-            return LOCATION_KEYS;
-        } else if (tokenType.equals(ThingsTypes.PARAMETER_KEY)) {
-            return PARAMETER_KEY_KEYS;
-        } else if (tokenType.equals(ThingsTypes.PARAMETER_STRING_VALUE)) {
-            return STRING_PARAMETER_VALUE_KEYS;
-        } else if (tokenType.equals(ThingsTypes.PARAMETER_NUMBER_VALUE)) {
-            return NUMBER_PARAMETER_VALUE_KEYS;
-        } else if (tokenType.equals(ThingsTypes.LEFT_BRACKET) || tokenType.equals(ThingsTypes.RIGHT_BRACKET)) {
+        } else if (tokenType.equals(RulesTypes.LEFT_BRACKET) || tokenType.equals(RulesTypes.RIGHT_BRACKET)) {
             return BRACKET_KEYS;
-        } else if (tokenType.equals(ThingsTypes.COMMENT)) {
+        } else if (tokenType.equals(RulesTypes.COMMENT)) {
             return COMMENT_KEYS;
         } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {
             return BAD_CHAR_KEYS;

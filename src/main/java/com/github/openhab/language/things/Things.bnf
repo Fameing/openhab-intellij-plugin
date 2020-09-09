@@ -13,14 +13,47 @@
     tokenTypeClass="com.github.openhab.language.things.psi.ThingsTokenType"
 
     psiImplUtilClass="com.github.openhab.language.things.psi.impl.ThingsPsiImplUtil"
+
+    tokens = [
+        STRING_LITERAL='regexp:"([^"]|"")*"'
+        IDENTIFIER_STRING='regexp:[a-zA-Z][a-zA-Z0-9_-]*'
+        NUMBER_LITERAL='regexp:[0-9]+'
+        WHITE_SPACE='regexp:\s+'
+
+        ET="@"
+        COLON=":"
+        COMMA=","
+        LEFT_PAREN="("
+        RIGHT_PAREN=")"
+        LEFT_BRACE="{"
+        RIGHT_BRACE="}"
+        LEFT_BRACKET="["
+        RIGHT_BRACKET="]"
+        LESS_THAN="<"
+        MORE_THAN=">"
+        EQUALS="="
+    ]
 }
 
-thingsFile                  ::= things_*
-private things_             ::= (thing_item|COMMENT|CRLF)
-private binding_id_keyword  ::= BINDING_ID_KEYWORD_TYPE
-private type_id_keyword     ::= TYPE_ID_KEYWORD_TYPE
-private thing_id_keyword    ::= THING_ID_KEYWORD_TYPE
-private binding_type        ::= (binding_id_keyword COLON type_id_keyword COLON thing_id_keyword)
-private parameter           ::= (PARAMETER_KEY SEPARATOR (STRING_PARAMETER_VALUE|NUMBER_PARAMETER_VALUE))
-private parameter_list      ::= parameter (COMMA parameter_list)*
-thing_item                  ::= THING_KEYWORD_TYPE binding_type LABEL? ET? LOCATION? LBRACKET parameter_list RBRACKET
+ThingsFile             ::= ItemThings_*
+private ItemThings_    ::= (ThingItem|COMMENT|CRLF)
+
+BINDING_ID_KEYWORD     ::= IDENTIFIER_STRING
+TYPE_ID_KEYWORD        ::= IDENTIFIER_STRING
+THING_ID_KEYWORD       ::= IDENTIFIER_STRING
+
+BindingType            ::= BINDING_ID_KEYWORD COLON TYPE_ID_KEYWORD COLON THING_ID_KEYWORD
+
+ParameterKey           ::= IDENTIFIER_STRING
+
+ParameterStringValue   ::= STRING_LITERAL
+ParameterNumberValue   ::= NUMBER_LITERAL
+ParameterValue         ::= (ParameterStringValue|ParameterNumberValue)
+Parameter              ::= ParameterKey EQUALS ParameterValue
+ParameterList          ::= Parameter (COMMA ParameterList)*
+
+Label                  ::= STRING_LITERAL
+Location               ::= STRING_LITERAL
+
+ThingKeyword           ::= IDENTIFIER_STRING
+ThingItem              ::= ThingKeyword BindingType Label? ET? Location? LEFT_BRACKET ParameterList RIGHT_BRACKET

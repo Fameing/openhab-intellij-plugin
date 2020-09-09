@@ -21,7 +21,7 @@ public class ThingsFormattingModelBuilder implements FormattingModelBuilder {
 
     private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
         return new SpacingBuilder(settings, ThingsLanguage.INSTANCE)
-                .around(ThingsTypes.SEPARATOR)
+                .around(ThingsTypes.EQUALS)
                 .spaceIf(settings.getCommonSettings(ThingsLanguage.INSTANCE.getID()).SPACE_AROUND_ASSIGNMENT_OPERATORS)
                 .before(ThingsTypes.THING_ITEM)
                 .none();

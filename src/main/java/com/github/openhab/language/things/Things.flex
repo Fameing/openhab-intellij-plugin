@@ -23,66 +23,65 @@ import static com.github.openhab.language.things.psi.ThingsTypes.*;
 %unicode
 %debug
 
-%state WAITING_BINDING_ID, WAITING_TYPE_ID, WAITING_THING_ID, WAITING_PARAMETER_KEY, WAITING_PARAMETER_VALUE, WAITING_LOCATION, WAITING_LABEL
+%state WAITING_BINDING_ID, WAITING_TYPE_ID, WAITING_THING_ID, WAITING_PARAMETER_KEY, WAITING_PARAMETER_VALUE, WAITING_LOCATION
 CRLF=\R
-WHITE_SPACE=\s+
-SEPARATOR=[=]
-BINDING_KEYWORD_TYPE=\w+
-KEY=\w+
-STRING_PARAMETER_VALUE=\"([^\\\"\r\n]|\\[^\r\n])*\"?
-NUMBER_PARAMETER_VALUE=\d+
+WHITE_SPACE=\s
 END_OF_LINE_COMMENT=("#"|"!")[^\r\n]*
+
+STRING_LITERAL=\"([^\"]|\"\")*\"
+IDENTIFIER_STRING=[a-zA-Z][a-zA-Z0-9_-]*
+NUMBER_LITERAL=[0-9]+
 
 %%
 <YYINITIAL> {
-  "Thing"                      { yybegin(WAITING_BINDING_ID); return THING_KEYWORD_TYPE; }
-  "Bridge"                     { yybegin(WAITING_BINDING_ID); return THING_KEYWORD_TYPE; }
-  "["                          { yybegin(WAITING_PARAMETER_KEY); return LBRACKET; }
-  "]"                          { return RBRACKET; }
-  ","                          { yybegin(WAITING_PARAMETER_KEY); return COMMA; }
-  "@"                          { yybegin(WAITING_LOCATION); return ET; }
+    ({CRLF}|{WHITE_SPACE})+     { return WHITE_SPACE; }
 
-  {SEPARATOR}                  { yybegin(WAITING_PARAMETER_VALUE); return SEPARATOR; }
-  {END_OF_LINE_COMMENT}        { return COMMENT; }
-  {WHITE_SPACE}                { return WHITE_SPACE; }
+    "Thing"                     { yybegin(WAITING_BINDING_ID); return THING_KEYWORD; }
+    "Bridge"                    { yybegin(WAITING_BINDING_ID); return THING_KEYWORD; }
+
+    ":"                         { return COLON; }
+    "("                         { return LEFT_PAREN; }
+    ")"                         { return RIGHT_PAREN; }
+    "{"                         { return LEFT_BRACE; }
+    "}"                         { return RIGHT_BRACE; }
+    "["                         { yybegin(WAITING_PARAMETER_KEY); return LEFT_BRACKET; }
+    "]"                         { return RIGHT_BRACKET; }
+    "<"                         { return LESS_THAN; }
+    ">"                         { return MORE_THAN; }
+    "="                         { yybegin(WAITING_PARAMETER_VALUE); return EQUALS; }
+    ","                         { yybegin(WAITING_PARAMETER_KEY); return COMMA; }
+    "@"                         { yybegin(WAITING_LOCATION); return ET; }
+    ":"                         { return COLON; }
+
+    {STRING_LITERAL}            { return LABEL; }
+    {END_OF_LINE_COMMENT}       { return COMMENT; }
+    ({CRLF}|{WHITE_SPACE})+     { return WHITE_SPACE; }
 }
 
+<WAITING_BINDING_ID> {
+    {IDENTIFIER_STRING}       { yybegin(WAITING_TYPE_ID); return BINDING_ID_KEYWORD; }
+}
 
- <WAITING_BINDING_ID> {
-    {WHITE_SPACE}             { yybegin(WAITING_BINDING_ID); return WHITE_SPACE; }
-    {BINDING_KEYWORD_TYPE}    { yybegin(WAITING_TYPE_ID); return BINDING_ID_KEYWORD_TYPE; }
- }
- <WAITING_TYPE_ID> {
-    ":"                       { yybegin(WAITING_TYPE_ID); return COLON; }
-    {BINDING_KEYWORD_TYPE}    { yybegin(WAITING_THING_ID); return TYPE_ID_KEYWORD_TYPE; }
- }
- <WAITING_THING_ID> {
-    ":"                       { yybegin(WAITING_THING_ID); return COLON; }
-    {BINDING_KEYWORD_TYPE}    { yybegin(WAITING_LABEL); return THING_ID_KEYWORD_TYPE; }
- }
+<WAITING_TYPE_ID> {
+    {IDENTIFIER_STRING}       { yybegin(WAITING_THING_ID); return TYPE_ID_KEYWORD; }
+}
 
- <WAITING_LABEL> {
-     {WHITE_SPACE}            { yybegin(WAITING_LABEL); return WHITE_SPACE; }
-     {STRING_PARAMETER_VALUE} { yybegin(YYINITIAL); return LABEL; }
- }
+<WAITING_THING_ID> {
+    {IDENTIFIER_STRING}       { yybegin(YYINITIAL); return THING_ID_KEYWORD; }
+}
 
- <WAITING_LOCATION> {
-     {WHITE_SPACE}            { yybegin(WAITING_LOCATION); return WHITE_SPACE; }
-     {STRING_PARAMETER_VALUE} { yybegin(YYINITIAL); return LOCATION; }
-  }
+<WAITING_LOCATION> {
+    {STRING_LITERAL}         { yybegin(YYINITIAL); return LOCATION; }
+}
 
- <WAITING_PARAMETER_KEY> {
-    {WHITE_SPACE}             { yybegin(WAITING_PARAMETER_KEY); return WHITE_SPACE; }
-    {KEY}                     { yybegin(YYINITIAL); return PARAMETER_KEY; }
- }
+<WAITING_PARAMETER_KEY> {
+    {IDENTIFIER_STRING}       { yybegin(YYINITIAL); return PARAMETER_KEY; }
+}
 
- <WAITING_PARAMETER_VALUE> {
-   {WHITE_SPACE}              { yybegin(WAITING_PARAMETER_VALUE); return WHITE_SPACE; }
-   {STRING_PARAMETER_VALUE}   { yybegin(YYINITIAL); return STRING_PARAMETER_VALUE; }
-   {NUMBER_PARAMETER_VALUE}   { yybegin(YYINITIAL); return NUMBER_PARAMETER_VALUE; }
- }
+<WAITING_PARAMETER_VALUE> {
+    {STRING_LITERAL}           { yybegin(YYINITIAL); return PARAMETER_STRING_VALUE; }
+    {NUMBER_LITERAL}           { yybegin(YYINITIAL); return PARAMETER_NUMBER_VALUE; }
+}
 
- ({CRLF}|{WHITE_SPACE})+      { return WHITE_SPACE; }
-
- [^] { return BAD_CHARACTER; }
+    [^]                        { return BAD_CHARACTER; }
 
